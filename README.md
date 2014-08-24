@@ -181,3 +181,23 @@ colnames(subUCIHAR) <- c("Subject", "Activity", tmpVarLabels)
 print("Variables renamed")
 Sys.sleep(1)
 ```
+
+In the end, to complete the exercise, it performs the following operations:
+
+1. with the aggregate() and factor() functions, it creates a new data frame in which:
+  - the subjects and the activities are treated as factors;
+  - for each combination of subject and activity, the mean and standard deviations are calculated
+  - the data is aggregated based on subject and activity, with one line per combination;
+2. the data is saved in a comma-separated txt file (I would have preferred a tab-separated .tsv file, but it isn't supported for the upload by the Coursera platform).
+```
+# Create a second, independent tidy data set with the average of each variable for each activity and each subject.
+print("Creating tidy data set with the averages by subject and activity")
+Sys.sleep(1)
+meansUCIHAR <- aggregate(subUCIHAR[,-which(names(subUCIHAR) %in% c("Subject","Activity"))], by = list(factor(subUCIHAR$Subject), factor(subUCIHAR$Activity)), FUN = mean)
+colnames(meansUCIHAR)[1:2] <- c("Subject", "Activity")
+print("Tidy data set created, saving to file")
+Sys.sleep(1)
+write.table(meansUCIHAR, file = "meansUCIHAR.txt", row.names = FALSE, sep = ",")
+print("File saved, goodbye and thanks for your time.")
+Sys.sleep(1)
+```
