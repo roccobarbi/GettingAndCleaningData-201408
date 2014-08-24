@@ -39,19 +39,19 @@ rm(trainData)
 # Import and prepare the labels
 print("Importing and preparing the column names")
 Sys.sleep(1)
-actLabels <- read.table("./UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
-actLabels <- rbind(c(" ", "Subject"), c(" ", "Activity"), actLabels)
-actLabels <- as.vector(actLabels[,2])
+varLabels <- read.table("./UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
+varLabels <- rbind(c(" ", "Subject"), c(" ", "Activity"), varLabels)
+varLabels <- as.vector(varLabels[,2])
 
 # Set the labels for the data frame
 print("renaming the columns")
 Sys.sleep(1)
-colnames(UCIHARData) <- actLabels
+colnames(UCIHARData) <- varLabels
 
 # Extract a list of the labels for mean and standard deviation
 print("Indexing the means and standard deviations")
 Sys.sleep(1)
-stdMeanMeas <- c(actLabels[grep("Subject", actLabels)], actLabels[grep("Activity", actLabels)],actLabels[grep("*std\\(\\)*", actLabels)],actLabels[grep("*mean\\(\\)*", actLabels)])
+stdMeanMeas <- c(varLabels[grep("Subject", varLabels)], varLabels[grep("Activity", varLabels)],varLabels[grep("*std\\(\\)*", varLabels)],varLabels[grep("*mean\\(\\)*", varLabels)])
 
 # Subset the data frame to extract only the measurements of mean and standard deviation
 print("Subsetting the data frame")
@@ -91,15 +91,15 @@ Sys.sleep(1)
 originalString <- c("^t", "^f", "-X$", "-Y$", "-Z$", "Jerk", "Mag", "BodyAcc", "GravityAcc", "BodyGyro", "-mean\\(\\)", "-std\\(\\)")
 targetString <- c("time -", "frequency -", " X-Axis", " Y-Axis", " Z-Axis", " Jerk Signal -", " Signal Magnitude -", " Body Acceleration -", " Gravity Acceleration -", " Gyroscope -", " Mean Value -", " Standard Deviation -")
 variableNames <- cbind(originalString, targetString)
-tmpActLables <- c(actLabels[grep("*std\\(\\)*", actLabels)],actLabels[grep("*mean\\(\\)*", actLabels)])
+tmpVarLabels <- c(varLabels[grep("*std\\(\\)*", varLabels)],varLabels[grep("*mean\\(\\)*", varLabels)])
 for(n in 1:nrow(variableNames)) {
   print(paste(n, "of", nrow(variableNames), sep = " "))
   Sys.sleep(1)
-  tmpActLables <- gsub(variableNames[n,1], variableNames[n,2], tmpActLables)
+  tmpVarLabels <- gsub(variableNames[n,1], variableNames[n,2], tmpVarLabels)
 }
 print("Vector created, renaming actual variables")
 Sys.sleep(1)
-colnames(subUCIHAR) <- c("Subject", "Activity", tmpActLables)
+colnames(subUCIHAR) <- c("Subject", "Activity", tmpVarLabels)
 print("Variables renamed")
 Sys.sleep(1)
 
