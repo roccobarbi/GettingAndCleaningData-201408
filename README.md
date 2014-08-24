@@ -1,5 +1,4 @@
-#GettingAndCleaningData-201408
-####Corse project for the Getting and Cleaning Data cource on Coursera, august 2014.
+#Getting and cleaning data - august 2014 - run_analsis.R
 ##Basic principles
 My run_analysis script runs in verbose mode, i.e. text is printed in the prompt explaining what's happening (instead of just having to wait it out and hope everything works fine). To allow for easier reading of these lines, after each of them is printed R is instructed to wait for 1 second before continuing execution.
 
@@ -17,7 +16,7 @@ Moreover, the code is commented for easier interpretation.
 These principles can be seen in action at the beginning of the code, when the test files are read and merged:
 
 ```
-\# Import and merge the test data
+# Import and merge the test data
 print("Importing the test data")
 Sys.sleep(1)
 testSubject <- read.table("./UCI HAR Dataset/test/subject_test.txt")
@@ -25,8 +24,8 @@ testX <- read.table("./UCI HAR Dataset/test/X_test.txt")
 testY <- read.table("./UCI HAR Dataset/test/y_test.txt")
 testData <- cbind(testSubject, testY, testX)
 
-\# Cleanup of temporary data
-\# This should reduce the total amount of memory needed to run this script
+# Cleanup of temporary data
+# This should reduce the total amount of memory needed to run this script
 rm(testSubject)
 rm(testX)
 rm(testY)
