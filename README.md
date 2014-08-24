@@ -38,4 +38,16 @@ This segment of code (which is later repeated for the train data) performs the f
 3. it merges these three data frames into one, larger data frame with the cbind() function;
 4. it cleans up the temporary data frames used to import the main data.
 
+Since this structure is repeated throughout the script, I will give it for granted in my explanation. I will not therefore repeat for each chunk of code that the data is commented, that a verbose comment is printed on screen and that the unused data is cleaned up.
+
 ##How the script works
+My run\_analysis.R script performs the following operations:
+
+1. it imports the test files and merges them into one data frame;
+2. it imports the train files and merges them into one data frame;
+3. it merges the test and train data frames into the larger UCIHARData data frame;
+4. it imports the activity labels from the features.txt file;
+5. it adds the "Subject" and "Activity" labels at the beginning of the labels vector;
+6. it renames the column of the UCIHARData data frame;
+7. it extracts with the grep() function the indices of the "Subject" and "Activity" columns and of all columns with mean or standard deviation variables;
+8. it subsets the UCIHARData data frame based on those indices, creating the subUCIHAR data frame.
