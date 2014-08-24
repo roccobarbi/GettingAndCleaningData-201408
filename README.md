@@ -90,21 +90,94 @@ rm(testData)
 rm(trainData)
 ```
 
+Then it imports the variable names from the features.txt file, adding the "Subject" and "Activity" labels at the beginning of the labels vector:
 ```
+# Import and prepare the labels
+print("Importing and preparing the column names")
+Sys.sleep(1)
+varLabels <- read.table("./UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
+varLabels <- rbind(c(" ", "Subject"), c(" ", "Activity"), varLabels)
+varLabels <- as.vector(varLabels[,2])
 ```
-4. it imports the variable names from the features.txt file;
 
+It then renames the columns of the UCIHARData data frame:
 ```
+# Set the labels for the data frame
+print("renaming the columns")
+Sys.sleep(1)
+colnames(UCIHARData) <- varLabels
 ```
-5. it adds the "Subject" and "Activity" labels at the beginning of the labels vector;
 
+Using the grep() function, it finds the indices of the "Subject" and "Activity" columns and of all columns with mean or standard deviation variables:
 ```
+# Extract a list of the labels for mean and standard deviation
+print("Indexing the means and standard deviations")
+Sys.sleep(1)
+stdMeanMeas <- c(varLabels[grep("Subject", varLabels)], varLabels[grep("Activity", varLabels)],varLabels[grep("*std\\(\\)*", varLabels)],varLabels[grep("*mean\\(\\)*", varLabels)])
 ```
-6. it renames the columns of the UCIHARData data frame;
 
+It then subsets the UCIHARData data frame based on those indices, creating the subUCIHAR data frame:
 ```
+# Subset the data frame to extract only the measurements of mean and standard deviation
+print("Subsetting the data frame")
+Sys.sleep(1)
+subUCIHAR <- UCIHARData[,stdMeanMeas]
+
+# Cleanup of temporary data
+# This should reduce the total amount of memory needed to run this script
+rm(stdMeanMeas)
+rm(UCIHARData)
 ```
-7. it extracts with the grep() function the indices of the "Subject" and "Activity" columns and of all columns with mean or standard deviation variables;
-8. it subsets the UCIHARData data frame based on those indices, creating the subUCIHAR data frame;
-9. it imports the activity labels from the activity\_lables.txt file;
-10. it cycles through each activity label
+
+It imports the activity labels from the activity\_lables.txt file:
+```
+# Imports the activity labels
+print("Importing the activity labels")
+Sys.sleep(1)
+actNames <- read.table("./UCI HAR Dataset/activity_labels.txt")
+```
+
+Then it cycles through each activity label and renames it in the data frame:
+```
+# Use descriptive activity names to name the activities in the data set
+print("Renaming the activities")
+Sys.sleep(1)
+for(n in 1:nrow(actNames)) {
+  print(as.character(actNames[n,2]))
+  Sys.sleep(1)
+  subUCIHAR[,"Activity"] <- gsub(actNames[n,1], actNames[n,2], subUCIHAR[,"Activity"])
+}
+print("All activities renamed")
+Sys.sleep(1)
+
+# Cleanup of temporary data
+# This should reduce the total amount of memory needed to run this script
+rm(actNames)
+```
+In order to label the data set with descriptive variable names, it performs the following operations:
+
+1. it creates a vector of regular expressions and descriptive elements, aimed at recognising and changing the elements of the untidy variable names;
+2. it extracts a vector of variable names to be changed;
+3. it cycles through each element in the vector and uses gsub to make the appropriate changes;
+4. it applies the new variable names to the data frame.
+```
+# Appropriately labels the data set with descriptive variable names.
+# To automate the process, the descriptive names will follow the order of the elements of
+# the original variable names.
+print("Creating vector of renamed variable names")
+Sys.sleep(1)
+originalString <- c("^t", "^f", "-X$", "-Y$", "-Z$", "Jerk", "Mag", "BodyAcc", "GravityAcc", "BodyGyro", "-mean\\(\\)", "-std\\(\\)")
+targetString <- c("time -", "frequency -", " X-Axis", " Y-Axis", " Z-Axis", " Jerk Signal -", " Signal Magnitude -", " Body Acceleration -", " Gravity Acceleration -", " Gyroscope -", " Mean Value -", " Standard Deviation -")
+variableNames <- cbind(originalString, targetString)
+tmpVarLabels <- c(varLabels[grep("*std\\(\\)*", varLabels)],varLabels[grep("*mean\\(\\)*", varLabels)])
+for(n in 1:nrow(variableNames)) {
+  print(paste(n, "of", nrow(variableNames), sep = " "))
+  Sys.sleep(1)
+  tmpVarLabels <- gsub(variableNames[n,1], variableNames[n,2], tmpVarLabels)
+}
+print("Vector created, renaming actual variables")
+Sys.sleep(1)
+colnames(subUCIHAR) <- c("Subject", "Activity", tmpVarLabels)
+print("Variables renamed")
+Sys.sleep(1)
+```
