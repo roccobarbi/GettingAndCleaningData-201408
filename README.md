@@ -41,8 +41,9 @@ This segment of code (which is later repeated for the train data) performs the f
 Since this structure is repeated throughout the script, I will give it for granted in my explanation. I will not therefore repeat for each chunk of code that the data is commented, that a verbose comment is printed on screen and that the unused data is cleaned up.
 
 ##How the script works
-My run\_analysis.R script performs the following operations (commented after the code):
+My run\_analysis.R script performs the operations that follow (commented before the code).
 
+First of all, it imports the test files and merges them into one data frame:
 ```
 # Import and merge the test data
 print("Importing the test data")
@@ -58,8 +59,8 @@ rm(testSubject)
 rm(testX)
 rm(testY)
 ```
-1. it imports the test files and merges them into one data frame;
 
+Then, it imports the train files and merges them into one data frame:
 ```
 # Import and merge the train data
 print("Importing the train data")
@@ -75,8 +76,8 @@ rm(trainSubject)
 rm(trainX)
 rm(trainY)
 ```
-2. it imports the train files and merges them into one data frame;
 
+After that, it merges the test and train data frames into the larger UCIHARData data frame:
 ```
 # Merge the whole data
 print("Merging the data into one, larger data frame")
@@ -88,7 +89,6 @@ UCIHARData <- rbind(testData, trainData)
 rm(testData)
 rm(trainData)
 ```
-3. it merges the test and train data frames into the larger UCIHARData data frame;
 
 ```
 ```
