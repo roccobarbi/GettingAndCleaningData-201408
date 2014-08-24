@@ -32,6 +32,7 @@ rm(testY)
 ```
 
 This segment of code (which is later repeated for the train data) performs the following operations:
+
 1. it notifies the operator that the test data is going to be imported;
 2. it reads the subject\_test.txt, the X\_test.txt and the Y\_test.txt files into data frames;
 3. it merges these three data frames into one, larger data frame with the cbind() function;
